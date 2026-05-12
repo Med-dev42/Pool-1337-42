@@ -1,125 +1,74 @@
-#include<unistd.h>
+#include <unistd.h>
 
-void ft_putchar(char c)
+int ft_check_error(char *base)
 {
-	write(1,&c,1);
+        int i;
+        int j;
+
+        i = 0;
+        while (base[i])
+                i++;
+        if (i < 2)
+                return 1;
+        i = 0;
+        while (base[i] != '\0')
+        {
+                if (base[i] == '-' || base[i] == '+' || base[i] == ' ' || (base[i] >= 9 && base[i] <= 13))
+                        return 1;
+                j = i + 1;
+                while (base[j] != '\0')
+                {
+                        if (base[i] == base[j])
+                                return 1;
+                        j++;
+                }
+                i++;
+        }
+        return 0;
 }
 
-void ft_putnbr(int nb)
+int ft_base_systeme(char *base, char c)
 {
-	if(nb == -2147483648)
-	{
-		write(1,"-2147483648",11);
-		return ;
-	}
+        int i;
 
-	if(nb < 0)
-	{
-		write(1,"-",1);
-		nb = -nb;
-	}
-
-	if(nb > 9)
-	{
-		ft_putnbr(nb / 10);
-	}
-	ft_putchar(nb % 10 + '0');
+        i = 0;
+        while (base[i])
+        {
+                if (base[i] == c)
+                        return i;
+                i++;
+        }
+        return -1;
 }
 
-void ft_puterorrs(char *base, int *error)
+int ft_atoi_base(char *str,char *base)
 {
-	int i;
-	int j;
+        int i;
+        int get;
+        int res;
 
-	if(base[0] == '\0' || base[1] == '\0')
-	{
-		*error = 1;
-	}
-	i = 0;
-	j = 0;
-	while(base[i] != '\0' && error == 0)
-	{
-		j = i + 1;
-		while(base[j] != '\0')
-		{
-			if(base[j] == base[i])
-			{
-				*error = 1;
-			}
-
-			if(base[j] == '-' || base[j] == '+')
-			{
-				*error = 1;
-			}
-
-			if(base[j] >=  126 || base[j] <= 32)
-			{
-				*error = 1;
-			}
-			j++;
-		}
-		i++;
-	}
+        i = 0;
+        get = 1;
+        res = 0;
+        if(ft_check_error(base) == 0)
+        {
+                while(base[i])
+                        i++;
+                while(*str ==  '-' || *str == '+' || *str == ' '  || (*str >= 9 && *str <= 13))
+                {
+                        if(*str ==  '-')
+                                get *= -1;
+                        str++;
+                }
+                while(ft_base_systeme(base, *str) != -1)
+                {
+                        res = (res * i) + ft_base_systeme(base, *str);
+                        str++;
+                }
+        }
+        return res * get;
 }
 
-int ft_base_index(char c, char *base)
-{
-	int i;
-
-	i = 0;
-	while(base[i] != '\0')
-	{
-		if(base[i] == c)
-		{
-			return i;	
-		}
-		i++;
-	}
-	return -1;
-}
-
-int ft_atoi_base(char *str, char *base)
-{
-	int error;
-	int get;
-	int res;
-	int lbase;
-
-	error = 0;
-	get = 1;
-	lbase = 0;
-	res = 0;
-	ft_puterorrs(base, &error);
-	if(error == 0)
-	{
-		while(base[lbase])
-		{
-			lbase++;
-		}
-
-		while (*str == ' ' || (*str >= 9 && *str <= 13))
-		{
-			str++;
-		}
-
-		while(*str == '-' || *str == '+')
-		{
-			if(*str == '-')
-			{
-				get *= -1;
-			}
-			str++;
-		}
-
-		while(ft_base_index(*str ,base) != -1)
-		{
-			res = (res * lbase) + ft_base_index(*str ,base);
-			str++;
-		}
-	}
-	return res * get;
-}
-	
 int main()
 {
 	char name[] = "Holla";
