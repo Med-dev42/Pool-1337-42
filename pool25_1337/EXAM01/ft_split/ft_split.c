@@ -1,4 +1,4 @@
-#include<unistd.h>
+#include<stdlib.h>
 
 static int	count_words(char const *s, char c)
 {
@@ -27,7 +27,7 @@ static char	*alloc_word(char const *s, int start, int finish)
 	char *word;
 	int size;
 	int i;
-	
+
 	i = 0;
 	size = finish - start;
 	word = malloc((size + 1) * sizeof(char));
@@ -88,4 +88,3 @@ char	**ft_split(char const *s, char c)
 	lst[j] = NULL;
 	return lst;
 }
-

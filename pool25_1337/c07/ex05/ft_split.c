@@ -1,4 +1,4 @@
-#include<unistd.h>
+#include<stdlib.h>
 
 int ft_strlen(char *str)
 {
@@ -50,7 +50,7 @@ int ft_count_words(char *str, char *charset)
 			while(str[i] != '\0' && ft_is_separator(charset, str[i]) == 0)
 			{
 				i++;
-			}	
+			}
 		}
 	}
 
@@ -116,7 +116,7 @@ char **ft_split(char *str, char *charset)
 			i++;
 		if(str[i] != '\0' && ft_is_separator(charset, str[i]) == 0)
 		{
-			word_len = ft_word_len(&str[i],charset);	
+			word_len = ft_word_len(&str[i],charset);
 			res[j] = (char *)malloc((word_len + 1) * sizeof(char));
 			ft_strncpy(res[j], &str[i], word_len);
 			res[j][word_len] = '\0';
